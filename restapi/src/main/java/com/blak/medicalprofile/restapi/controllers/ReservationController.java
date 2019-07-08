@@ -1,6 +1,6 @@
 package com.blak.medicalprofile.restapi.controllers;
 
-import com.blak.medicalprofile.dao.Calendar;
+import com.blak.medicalprofile.dao.Reservation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,7 +11,7 @@ public class ReservationController {
 
 
     @GetMapping("/terms")
-    public ResponseEntity<Calendar> getTerms() {
-        return new ResponseEntity<>(new Calendar(), HttpStatus.OK);
+    public ResponseEntity<Reservation> getTerms() {
+        return new ResponseEntity<>(new Reservation(), HttpStatus.OK);
     }
 }

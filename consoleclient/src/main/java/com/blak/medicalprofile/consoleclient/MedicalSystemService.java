@@ -1,6 +1,6 @@
 package com.blak.medicalprofile.consoleclient;
 
-import com.blak.medicalprofile.dao.Calendar;
+import com.blak.medicalprofile.dao.Reservation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -13,7 +13,7 @@ public class MedicalSystemService {
         this.restTemplate = restTemplate;
     }
 
-    public Calendar getCalendar(){
-        return restTemplate.getForObject("http://localhost:8080/terms", Calendar.class);
+    public Reservation getCalendar(){
+        return restTemplate.getForObject("http://localhost:8080/terms", Reservation.class);
     }
 }

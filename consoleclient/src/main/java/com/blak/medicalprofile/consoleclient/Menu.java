@@ -1,6 +1,6 @@
 package com.blak.medicalprofile.consoleclient;
 
-import com.blak.medicalprofile.dao.Calendar;
+import com.blak.medicalprofile.dao.Reservation;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -46,8 +46,8 @@ public class Menu {
                     break;
                 case 2:
                     MedicalSystemService medicalSystemService = new MedicalSystemService(new RestTemplate());
-                    Calendar calendar = medicalSystemService.getCalendar();
-                    System.out.println(calendar.toString());
+                    Reservation reservation = medicalSystemService.getCalendar();
+                    reservation.printCalendar();
                     break;
 //        case 3:
 //        System.out.println("Enter password to entry ranking:");
