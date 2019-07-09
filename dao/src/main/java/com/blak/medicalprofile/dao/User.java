@@ -1,6 +1,7 @@
 package com.blak.medicalprofile.dao;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public abstract class User {
     private String firstName;
@@ -49,4 +50,45 @@ public abstract class User {
         this.userKey = userKey;
     }
 
+    public User firstName(final String firstName) {
+        this.firstName = firstName;
+        return this;
+    }
+
+    public User lastName(final String lastName) {
+        this.lastName = lastName;
+        return this;
+    }
+
+    public User birthday(final LocalDate birthday) {
+        this.birthday = birthday;
+        return this;
+    }
+
+    public User pesel(final String pesel) {
+        this.pesel = pesel;
+        return this;
+    }
+
+    public User userKey(final String userKey) {
+        this.userKey = userKey;
+        return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(firstName, user.firstName) &&
+                Objects.equals(lastName, user.lastName) &&
+                Objects.equals(birthday, user.birthday) &&
+                Objects.equals(pesel, user.pesel) &&
+                Objects.equals(userKey, user.userKey);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(firstName, lastName, birthday, pesel, userKey);
+    }
 }

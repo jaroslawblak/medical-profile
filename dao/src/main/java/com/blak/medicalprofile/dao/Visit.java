@@ -4,26 +4,19 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class Visit {
-    private Doctor doctor;
     private LocalDate date;
     private LocalTime time;
     private User user;
     private VisitType visitType;
 
-    public Visit(Doctor doctor, LocalDate date, LocalTime time, User user, VisitType visitType) {
-        this.doctor = doctor;
+    public Visit(LocalDate date, LocalTime time, User user, VisitType visitType) {
         this.date = date;
         this.time = time;
         this.user = user;
         this.visitType = visitType;
     }
 
-    public Doctor getDoctor() {
-        return doctor;
-    }
-
-    public void setDoctor(Doctor doctor) {
-        this.doctor = doctor;
+    public Visit() {
     }
 
     public LocalDate getDate() {
