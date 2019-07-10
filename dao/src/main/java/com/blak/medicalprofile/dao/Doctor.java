@@ -20,7 +20,8 @@ public class Doctor extends User {
         this.doctorType = doctorType;
     }
 
-    public String toShortString() {
+    @Override
+    public String toString() {
         return this.getFirstName() + " " + this.getLastName() + " " + this.getDoctorType();
     }
 

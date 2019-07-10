@@ -1,7 +1,6 @@
 package com.blak.medicalprofile.restapi.controllers;
 
 import com.blak.medicalprofile.dao.Doctor;
-import com.blak.medicalprofile.dao.Reservation;
 import com.blak.medicalprofile.services.MockService;
 import com.blak.medicalprofile.services.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,15 +17,19 @@ import java.util.List;
 @RestController
 public class ReservationController {
 
+    private MockService mockService = new MockService();
+
     private ReservationService reservationService;
 
-    public ReservationController(@Autowired ReservationService reservationService) {
+    public ReservationController(@Autowired ReservationService reservationService, @Autowired MockService mockService) {
         this.reservationService = reservationService;
+        this.mockService = mockService;
     }
 
     @GetMapping("/mock/timetables")
-    public ResponseEntity<Reservation> getMockedTimetables() {
-        return new ResponseEntity<>(new MockService().mockBusyTermsForDoctors(), HttpStatus.OK);
+    public ResponseEntity<?> getMockedTimetables() {
+        this.mockService.mockBusyTermsForDoctors();
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/mock/doctors")

@@ -1,14 +1,12 @@
 package com.blak.medicalprofile.consoleclient;
 
 import com.blak.medicalprofile.dao.Doctor;
-import com.blak.medicalprofile.dao.Reservation;
-import com.blak.medicalprofile.services.MockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalTime;
@@ -18,13 +16,12 @@ import java.util.List;
 public class MedicalSystemService {
     private RestTemplate restTemplate;
 
-    static {
-        MockService mockService = new MockService();
-        mockService.mockBusyTermsForDoctors();
-    }
-
     public MedicalSystemService(@Autowired RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
+    }
+
+    public ResponseEntity<Void> getMockedTimetables(){
+        return restTemplate.getForEntity("http://localhost:8082/mock/timetables", Void.class);
     }
 
     public List<Doctor> getMockedDoctors() {

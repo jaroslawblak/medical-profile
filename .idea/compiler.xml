@@ -6,11 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="consoleclient" />
-        <module name="dao" />
-        <module name="dto" />
         <module name="restapi" />
+        <module name="consoleclient" />
         <module name="services" />
+        <module name="dto" />
+        <module name="dao" />
       </profile>
     </annotationProcessing>
   </component>

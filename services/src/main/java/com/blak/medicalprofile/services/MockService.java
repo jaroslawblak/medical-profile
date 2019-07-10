@@ -1,11 +1,13 @@
 package com.blak.medicalprofile.services;
 
 import com.blak.medicalprofile.dao.*;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
 
+@Service
 public class MockService {
 
     public List<Doctor> getMockedDoctorList() {
@@ -46,7 +48,7 @@ public class MockService {
         return doctors;
     }
 
-    public Reservation mockBusyTermsForDoctors() {
+    public Map<Doctor, Map<LocalDate, Set<Visit>>> mockBusyTermsForDoctors() {
         Reservation reservation = new Reservation();
         List<Doctor> doctors = getMockedDoctorList();
         if (Reservation.getDoctorTimetable().isEmpty()) {
@@ -60,7 +62,7 @@ public class MockService {
                 }
             }
         }
-        return reservation;
+        return Reservation.getDoctorTimetable();
     }
 
     private Set<Visit> mockAllTermsInDay(LocalDate date) {

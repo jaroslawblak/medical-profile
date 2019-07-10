@@ -3,10 +3,8 @@ package com.blak.medicalprofile.dao;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
-import java.util.stream.Stream;
 
 public class Reservation implements Serializable {
     static final long serialVersionUID = 1L;
@@ -52,16 +50,16 @@ public class Reservation implements Serializable {
     public Boolean checkForFreeTerms(Doctor doctor, int dayOfMonth) throws NullPointerException {
         LocalDate date = LocalDate.now().withDayOfMonth(dayOfMonth);
 
-        if(getDoctorTimetable().get(doctor).get(date)!= null){
+        if (getDoctorTimetable().get(doctor).get(date) != null) {
             return (getDoctorTimetable().get(doctor).get(date).size() == 8);
         }
         return false;
     }
 
-    public Set<LocalTime> getAllAvailableTerms(){
+    public Set<LocalTime> getAllAvailableTerms() {
         Set<LocalTime> allTermsInDay = new TreeSet<>();
         for (int i = 10; i <= 18; i++) {
-            allTermsInDay.add(LocalTime.of(i,0,0,0));
+            allTermsInDay.add(LocalTime.of(i, 0, 0, 0));
         }
         return allTermsInDay;
     }

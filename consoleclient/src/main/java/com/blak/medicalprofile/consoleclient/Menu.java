@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
@@ -14,6 +13,7 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class Menu {
     private RestTemplate restTemplate;
+    private Reservation reservation = new Reservation();
     private static final String WELCOME_MESSAGE = "Welcome in medical system." +
             "\n Press [1] to show enable specialist's in our system" +
             "\n Press [2] to check and reserve free term" +
@@ -48,18 +48,18 @@ public class Menu {
                     break;
                 case 2:
                     MedicalSystemService medicalSystemService = new MedicalSystemService(restTemplate);
-                    Reservation reservation = new Reservation();
                     List<Doctor> doctors = medicalSystemService.getMockedDoctors();
                     System.out.println("Select doctor to check and reserve a free term: \n");
                     int index = 1;
                     for (Doctor doctor : doctors) {
-                        System.out.println(index + ". " + doctor.toShortString());
+                        System.out.println(index + ". " + doctor.toString());
                         index++;
                     }
                     int chosenDoctor = sc.nextInt();
                     sc.nextLine();
                     Doctor selectedDoctor = doctors.get(chosenDoctor - 1);
-                    reservation.printCalendar(selectedDoctor);
+                    medicalSystemService.getMockedTimetables();
+
                     System.out.println("\n Choose your date");
                     int i = sc.nextInt();
 
