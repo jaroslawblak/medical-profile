@@ -4,25 +4,18 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
+import java.util.stream.Stream;
 
 public class Reservation implements Serializable {
     static final long serialVersionUID = 1L;
-    private static final Map<Doctor, Map<LocalDateTime, Visit>> doctorTimetable = new LinkedHashMap<>();
-    private LocalDate lastVisit;
+    private static final Map<Doctor, Map<LocalDate, Set<Visit>>> doctorTimetable = new LinkedHashMap<>();
 
     public Reservation() {
     }
 
-    public LocalDate getLastVisit() {
-        return lastVisit;
-    }
-
-    public void setLastVisit(LocalDate lastVisit) {
-        this.lastVisit = lastVisit;
-    }
-
-    public static Map<Doctor, Map<LocalDateTime, Visit>> getDoctorTimetable() {
+    public static Map<Doctor, Map<LocalDate, Set<Visit>>> getDoctorTimetable() {
         return doctorTimetable;
     }
 
@@ -56,16 +49,24 @@ public class Reservation implements Serializable {
         }
     }
 
-    private Boolean checkForFreeTerms(Doctor doctor, int dayOfMonth) {
-        Set<LocalDateTime> allTermsInDay = new TreeSet<>();
-        for (int i = 10; i <= 18; i++) {
-            allTermsInDay.add(LocalDateTime.now()
-                    .withDayOfMonth(dayOfMonth)
-                    .withHour(i)
-                    .withMinute(0)
-                    .withSecond(0)
-                    .withNano(0));
+    public Boolean checkForFreeTerms(Doctor doctor, int dayOfMonth) throws NullPointerException {
+        LocalDate date = LocalDate.now().withDayOfMonth(dayOfMonth);
+
+        if(getDoctorTimetable().get(doctor).get(date)!= null){
+            return (getDoctorTimetable().get(doctor).get(date).size() == 8);
         }
-        return getDoctorTimetable().get(doctor).keySet().containsAll(allTermsInDay);
+        return false;
     }
+
+    public Set<LocalTime> getAllAvailableTerms(){
+        Set<LocalTime> allTermsInDay = new TreeSet<>();
+        for (int i = 10; i <= 18; i++) {
+            allTermsInDay.add(LocalTime.of(i,0,0,0));
+        }
+        return allTermsInDay;
+    }
+
+//    public Set<LocalDateTime> getFreeTermsInDay(Doctor doctor, int dayOfMonth){
+//        doctorTimetable.get(doctor).get(LocalDate.now().withDayOfMonth(dayOfMonth))
+//    }
 }

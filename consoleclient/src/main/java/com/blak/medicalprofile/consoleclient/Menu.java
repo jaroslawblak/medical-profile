@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
@@ -62,14 +63,13 @@ public class Menu {
                     System.out.println("\n Choose your date");
                     int i = sc.nextInt();
 
-                    //TODO:
-//                    if(reservation.checkIfTermIsFree(selectedDoctor, LocalDate.now().withDayOfMonth(i))){
-//                        System.out.println("No available terms in this day");
-//                    }
+                    if(reservation.checkForFreeTerms(selectedDoctor, i)){
+                        System.out.println("No available terms in this day");
+                    }
+                    System.out.println(medicalSystemService.getFreeTermsInDay(selectedDoctor, i));
                     sc.nextLine();
 
                     break;
-                //TODO:
                 case 3:
                     break;
                 default:

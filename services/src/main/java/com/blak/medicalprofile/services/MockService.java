@@ -1,12 +1,9 @@
 package com.blak.medicalprofile.services;
 
-import com.blak.medicalprofile.dao.Doctor;
-import com.blak.medicalprofile.dao.DoctorType;
-import com.blak.medicalprofile.dao.Reservation;
-import com.blak.medicalprofile.dao.Visit;
+import com.blak.medicalprofile.dao.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 
 public class MockService {
@@ -54,25 +51,23 @@ public class MockService {
         List<Doctor> doctors = getMockedDoctorList();
         if (Reservation.getDoctorTimetable().isEmpty()) {
             for (Doctor doctor : doctors) {
-                Map<LocalDateTime, Visit> mockedDoctorTimetable = new TreeMap<>();
+                Map<LocalDate, Set<Visit>> mockedDoctorTimetable = new TreeMap<>();
                 Random random = new Random();
                 for (int i = 0; i < 20; i++) {
-                    int randomDay = random.nextInt(31);
-                    for (int k = 0; k < 20; k++) {
-                        int randomBusyTerm = random.nextInt(9);
-                        mockedDoctorTimetable.put(LocalDateTime.now()
-                                        .plusDays(randomDay)
-                                        .withHour(10 + randomBusyTerm)
-                                        .withMinute(0)
-                                        .withSecond(0)
-                                        .withNano(0)
-                                , new Visit());
-                        Reservation.getDoctorTimetable().put(doctor, mockedDoctorTimetable);
-                    }
+                    LocalDate randomDay = LocalDate.now().withDayOfMonth(random.nextInt(31) + 1);
+                    mockedDoctorTimetable.put(randomDay, mockAllTermsInDay(randomDay));
+                    Reservation.getDoctorTimetable().put(doctor, mockedDoctorTimetable);
                 }
             }
         }
-        reservation.setLastVisit(LocalDate.now());
         return reservation;
+    }
+
+    private Set<Visit> mockAllTermsInDay(LocalDate date) {
+        TreeSet<Visit> visits = new TreeSet<>();
+        for (int k = 0; k < 8; k++) {
+            visits.add(new Visit(date, LocalTime.of(10 + k, 0), null, VisitType.REGULAR));
+        }
+        return visits;
     }
 }
