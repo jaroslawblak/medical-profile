@@ -1,23 +1,34 @@
 package com.blak.medicalprofile.dao;
 
-import java.io.Serializable;
+import org.springframework.stereotype.Component;
+
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.*;
 
-public class Reservation implements Serializable {
-    static final long serialVersionUID = 1L;
-    private static final Map<Doctor, Map<LocalDate, Set<Visit>>> doctorTimetable = new LinkedHashMap<>();
+@Component
+public class Timetable {
 
-    public Reservation() {
+    private Map<LocalDate, Set<Visit>> calendar = new TreeMap<>();
+
+    public Timetable() {
     }
 
-    public static Map<Doctor, Map<LocalDate, Set<Visit>>> getDoctorTimetable() {
-        return doctorTimetable;
+    public Map<LocalDate, Set<Visit>> getCalendar() {
+        return calendar;
     }
 
-    public void printCalendar(Doctor doctor) {
+    public void setCalendar(Map<LocalDate, Set<Visit>> calendar) {
+        this.calendar = calendar;
+    }
+
+    public Timetable calendar(final Map<LocalDate, Set<Visit>> calendar) {
+        this.calendar = calendar;
+        return this;
+    }
+
+
+    public void printCalendar() {
         Calendar calendar = new GregorianCalendar();
         calendar.set(Calendar.DAY_OF_MONTH, 1);
         int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
@@ -36,10 +47,10 @@ public class Reservation implements Serializable {
             for (int j = ((i == 0) ? dayOfWeek - 1 : 0); j < 7 && (dayOfMonth <= daysInMonth); j++) {
                 if (dayOfMonth < LocalDate.now().getDayOfMonth()) {
                     System.out.printf(FontColour.getAnsiBlack() + "%2d " + FontColour.getAnsiReset(), dayOfMonth);
-                } else if (checkForFreeTerms(doctor, dayOfMonth)) {
-                    System.out.printf(FontColour.getAnsiRed() + "%2d " + FontColour.getAnsiReset(), dayOfMonth);
-                } else {
+                } else if (checkForFreeTerms(dayOfMonth)) {
                     System.out.printf(FontColour.getAnsiGreen() + "%2d " + FontColour.getAnsiReset(), dayOfMonth);
+                } else {
+                    System.out.printf(FontColour.getAnsiRed() + "%2d " + FontColour.getAnsiReset(), dayOfMonth);
                 }
                 dayOfMonth++;
             }
@@ -47,24 +58,26 @@ public class Reservation implements Serializable {
         }
     }
 
-    public Boolean checkForFreeTerms(Doctor doctor, int dayOfMonth) throws NullPointerException {
+    public Boolean checkForFreeTerms(int dayOfMonth) {
         LocalDate date = LocalDate.now().withDayOfMonth(dayOfMonth);
-
-        if (getDoctorTimetable().get(doctor).get(date) != null) {
-            return (getDoctorTimetable().get(doctor).get(date).size() == 8);
+        if(this.getCalendar().containsKey(date)){
+            return this.getCalendar().get(date).size() <= 8;
         }
         return false;
-    }
-
-    public Set<LocalTime> getAllAvailableTerms() {
-        Set<LocalTime> allTermsInDay = new TreeSet<>();
-        for (int i = 10; i <= 18; i++) {
-            allTermsInDay.add(LocalTime.of(i, 0, 0, 0));
         }
-        return allTermsInDay;
-    }
 
-//    public Set<LocalDateTime> getFreeTermsInDay(Doctor doctor, int dayOfMonth){
-//        doctorTimetable.get(doctor).get(LocalDate.now().withDayOfMonth(dayOfMonth))
+//    public Set<LocalTime> getAllAvailableTerms() {
+//        Set<LocalTime> allTermsInDay = new TreeSet<>();
+//        for (int i = 10; i <= 18; i++) {
+//            allTermsInDay.add(LocalTime.of(i, 0, 0, 0));
+//        }
+//        return allTermsInDay;
 //    }
+
+    @Override
+    public String toString() {
+        return "Timetable{" +
+                "calendar=" + calendar +
+                '}';
+    }
 }

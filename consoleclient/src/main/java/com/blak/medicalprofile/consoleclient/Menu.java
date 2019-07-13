@@ -1,7 +1,7 @@
 package com.blak.medicalprofile.consoleclient;
 
 import com.blak.medicalprofile.dao.Doctor;
-import com.blak.medicalprofile.dao.Reservation;
+import com.blak.medicalprofile.dao.Timetable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class Menu {
     private RestTemplate restTemplate;
-    private Reservation reservation = new Reservation();
+    private MedicalSystemService medicalSystemService;
     private static final String WELCOME_MESSAGE = "Welcome in medical system." +
             "\n Press [1] to show enable specialist's in our system" +
             "\n Press [2] to check and reserve free term" +
@@ -21,12 +21,14 @@ public class Menu {
             "\n Press [0] to exit program..." +
             "\n Waiting...";
 
-    public Menu(@Autowired RestTemplate restTemplate) throws InterruptedException {
+    public Menu(@Autowired RestTemplate restTemplate) throws Exception {
         this.restTemplate = restTemplate;
+        this.medicalSystemService= new MedicalSystemService(restTemplate);
+        this.medicalSystemService.getMockedCalendar();
         this.executeProgram();
     }
 
-    private void executeProgram() throws InterruptedException {
+    private void executeProgram() throws Exception {
         while (true) {
             System.out.println(WELCOME_MESSAGE);
             Scanner sc = new Scanner(System.in);
@@ -47,7 +49,6 @@ public class Menu {
                     TimeUnit.SECONDS.sleep(5);
                     break;
                 case 2:
-                    MedicalSystemService medicalSystemService = new MedicalSystemService(restTemplate);
                     List<Doctor> doctors = medicalSystemService.getMockedDoctors();
                     System.out.println("Select doctor to check and reserve a free term: \n");
                     int index = 1;
@@ -58,16 +59,16 @@ public class Menu {
                     int chosenDoctor = sc.nextInt();
                     sc.nextLine();
                     Doctor selectedDoctor = doctors.get(chosenDoctor - 1);
-                    medicalSystemService.getMockedTimetables();
-
-                    System.out.println("\n Choose your date");
-                    int i = sc.nextInt();
-
-                    if(reservation.checkForFreeTerms(selectedDoctor, i)){
-                        System.out.println("No available terms in this day");
-                    }
-                    System.out.println(medicalSystemService.getFreeTermsInDay(selectedDoctor, i));
-                    sc.nextLine();
+                    Timetable doctorTimetable = medicalSystemService.getCalendarForDoctor(selectedDoctor.getId());
+                    doctorTimetable.printCalendar();
+//                    System.out.println("\n Choose your date");
+//                    int i = sc.nextInt();
+//
+//                    if(reservation.checkForFreeTerms(selectedDoctor, i)){
+//                        System.out.println("No available terms in this day");
+//                    }
+//                    System.out.println(medicalSystemService.getFreeTermsInDay(selectedDoctor, i));
+//                    sc.nextLine();
 
                     break;
                 case 3:

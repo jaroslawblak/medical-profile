@@ -4,11 +4,21 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public abstract class User {
+    private int id;
     private String firstName;
     private String lastName;
     private LocalDate birthday;
     private String pesel;
     private String userKey;
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -65,6 +75,12 @@ public abstract class User {
         return this;
     }
 
+    public User id(final int id) {
+        this.id = id;
+        return this;
+    }
+
+
     public User pesel(final String pesel) {
         this.pesel = pesel;
         return this;
@@ -80,7 +96,8 @@ public abstract class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(firstName, user.firstName) &&
+        return id == user.id &&
+                Objects.equals(firstName, user.firstName) &&
                 Objects.equals(lastName, user.lastName) &&
                 Objects.equals(birthday, user.birthday) &&
                 Objects.equals(pesel, user.pesel) &&
@@ -89,6 +106,18 @@ public abstract class User {
 
     @Override
     public int hashCode() {
-        return Objects.hash(firstName, lastName, birthday, pesel, userKey);
+        return Objects.hash(id, firstName, lastName, birthday, pesel, userKey);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", birthday=" + birthday +
+                ", pesel='" + pesel + '\'' +
+                ", userKey='" + userKey + '\'' +
+                '}';
     }
 }

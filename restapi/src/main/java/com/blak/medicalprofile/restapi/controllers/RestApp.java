@@ -11,3 +11,4 @@ public class RestApp {
         SpringApplication.run(RestApp.class);
     }
 }
+
