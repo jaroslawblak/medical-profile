@@ -1,6 +1,5 @@
 package com.blak.medicalprofile.dao;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 public class Doctor extends User {

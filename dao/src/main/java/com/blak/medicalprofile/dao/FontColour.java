@@ -1,24 +1,29 @@
 package com.blak.medicalprofile.dao;
 
-public class FontColour {
-    private static final String ANSI_GREEN = "\u001B[32m";
-    private static final String ANSI_RESET = "\u001B[0m";
-    private static final String ANSI_RED = "\u001B[31m";
-    public static final String ANSI_BLACK = "\u001B[30m";
+public enum FontColour {
+    ANSI_GREEN("\u001B[32m"),
+    ANSI_RESET("\u001B[0m"),
+    ANSI_RED("\u001B[31m"),
+    ANSI_BLACK("\u001B[30m");
 
-    public static String getAnsiGreen() {
-        return ANSI_GREEN;
+    private String value;
+
+    FontColour(String fontColour) {
+        this.value = fontColour;
     }
 
-    public static String getAnsiReset() {
-        return ANSI_RESET;
+    public String getValue() {
+        return this.value;
     }
 
-    public static String getAnsiRed() {
-        return ANSI_RED;
-    }
-
-    public static String getAnsiBlack() {
-        return ANSI_BLACK;
+    public static FontColour fromString(String StringOfFontColour) {
+        for (FontColour fontColour : FontColour.values()) {
+            if (fontColour.getValue().equalsIgnoreCase(StringOfFontColour)) {
+                return fontColour;
+            }
+        }
+        return null;
     }
 }
+
+

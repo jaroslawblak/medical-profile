@@ -4,10 +4,13 @@ import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public class Timetable {
+    public static final int MAX_TERMS_IN_DAY = 8;
 
     private Map<LocalDate, Set<Visit>> calendar = new TreeMap<>();
 
@@ -46,11 +49,11 @@ public class Timetable {
         for (int i = 0, dayOfMonth = 1; dayOfMonth <= daysInMonth; i++) {
             for (int j = ((i == 0) ? dayOfWeek - 1 : 0); j < 7 && (dayOfMonth <= daysInMonth); j++) {
                 if (dayOfMonth < LocalDate.now().getDayOfMonth()) {
-                    System.out.printf(FontColour.getAnsiBlack() + "%2d " + FontColour.getAnsiReset(), dayOfMonth);
+                    System.out.printf(FontColour.ANSI_BLACK.getValue() + "%2d " + FontColour.ANSI_RESET.getValue(), dayOfMonth);
                 } else if (checkForFreeTerms(dayOfMonth)) {
-                    System.out.printf(FontColour.getAnsiGreen() + "%2d " + FontColour.getAnsiReset(), dayOfMonth);
+                    System.out.printf(FontColour.ANSI_GREEN.getValue() + "%2d " + FontColour.ANSI_RESET.getValue(), dayOfMonth);
                 } else {
-                    System.out.printf(FontColour.getAnsiRed() + "%2d " + FontColour.getAnsiReset(), dayOfMonth);
+                    System.out.printf(FontColour.ANSI_RED.getValue() + "%2d " + FontColour.ANSI_RESET.getValue(), dayOfMonth);
                 }
                 dayOfMonth++;
             }
@@ -61,18 +64,27 @@ public class Timetable {
     public Boolean checkForFreeTerms(int dayOfMonth) {
         LocalDate date = LocalDate.now().withDayOfMonth(dayOfMonth);
         if(this.getCalendar().containsKey(date)){
-            return this.getCalendar().get(date).size() <= 8;
+            return this.getCalendar().get(date).size() < MAX_TERMS_IN_DAY;
         }
-        return false;
+        return true;
         }
 
-//    public Set<LocalTime> getAllAvailableTerms() {
-//        Set<LocalTime> allTermsInDay = new TreeSet<>();
-//        for (int i = 10; i <= 18; i++) {
-//            allTermsInDay.add(LocalTime.of(i, 0, 0, 0));
-//        }
-//        return allTermsInDay;
-//    }
+    public Set<LocalTime> getAllFreeTermsInDay(int dayOfMonth) {
+        Set<LocalTime> allTermsInDay = new TreeSet<>();
+        for (int i = 10; i < 18; i++) {
+            allTermsInDay.add(LocalTime.of(i, 0, 0, 0));
+        }
+        if(!this.getCalendar().containsKey(LocalDate.now().withDayOfMonth(dayOfMonth))){
+            return allTermsInDay;
+        }
+        Set<LocalTime> busyTermsInDay = this.getCalendar()
+                .get(LocalDate.now().withDayOfMonth(dayOfMonth))
+                .stream()
+                .map(Visit::getTime)
+                .collect(Collectors.toSet());
+        allTermsInDay.removeAll(busyTermsInDay);
+        return allTermsInDay;
+    }
 
     @Override
     public String toString() {
