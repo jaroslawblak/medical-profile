@@ -16,9 +16,9 @@ public enum VisitType {
         return this.value;
     }
 
-    public static VisitType fromString(String StringOfVisitType) {
+    public static VisitType fromString(String stringOfVisitType) {
         for (VisitType visitType : VisitType.values()) {
-            if (visitType.getValue().equalsIgnoreCase(StringOfVisitType)) {
+            if (visitType.getValue().equalsIgnoreCase(stringOfVisitType.toUpperCase())) {
                 return visitType;
             }
         }

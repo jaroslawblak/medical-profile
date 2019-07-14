@@ -61,7 +61,6 @@ public class MockService {
                 LocalDate localDate = LocalDate.now().plusDays(i);
                 if (new Random().nextInt(31) > i) {
                     this.timetable.getCalendar().put(localDate, mockTermsInDay(localDate));
-                    continue;
                 }
             }
         }

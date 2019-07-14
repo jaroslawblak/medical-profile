@@ -16,9 +16,9 @@ public enum DoctorType {
         return this.value;
     }
 
-    public static DoctorType fromString(String StringOfDoctorType) {
+    public static DoctorType fromString(String stringOfDoctorType) {
         for (DoctorType doctorType : DoctorType.values()) {
-            if (doctorType.getValue().equalsIgnoreCase(StringOfDoctorType)) {
+            if (doctorType.getValue().equalsIgnoreCase(stringOfDoctorType)) {
                 return doctorType;
             }
         }

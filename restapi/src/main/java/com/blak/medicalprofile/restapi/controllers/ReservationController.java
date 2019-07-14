@@ -36,12 +36,21 @@ public class ReservationController {
 
     @GetMapping("/mock/doctors")
     public ResponseEntity<List<Doctor>> getMockedDoctors() {
-        return new ResponseEntity<>(mockService.getMockedDoctorList(), HttpStatus.OK);
+        return new ResponseEntity<>(MockService.getMockedDoctorList(), HttpStatus.OK);
     }
 
-    @PostMapping
-    public ResponseEntity<Boolean> reserveTerm(@RequestBody Visit visit){
-        return new ResponseEntity<>(timetableService.addNewReservation(visit),HttpStatus.OK);
+    @PostMapping("/reservations/new")
+    public ResponseEntity<Boolean> reserveTerm(@RequestBody Visit visit) {
+        return new ResponseEntity<>(timetableService.addNewReservation(visit), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/reservations/delete/{userKey}")
+    public void deleteReservation(@PathVariable String userKey) {
+        timetableService.deleteReservation(userKey);
+    }
+
+    @GetMapping("/reservations/details/{userKey}")
+    public ResponseEntity<Visit> getVisitDetails(@PathVariable String userKey) {
+        return new ResponseEntity<>(timetableService.getVisitDetails(userKey), HttpStatus.OK);
     }
 }
-

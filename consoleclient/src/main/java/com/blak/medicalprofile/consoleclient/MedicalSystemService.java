@@ -36,12 +36,15 @@ public class MedicalSystemService {
         return restTemplate.postForObject("http://localhost:8082/reservations/new", visit, Boolean.TYPE);
     }
 
-    public User generateUserKey(User user){
-        return restTemplate.getForEntity("http://localhost:8082/keys/generate", User.class).getBody();
+    public User generateUserKey(User user) {
+        return restTemplate.postForEntity("http://localhost:8082/keys/generate", user, User.class).getBody();
     }
 
     public void removeVisitByUserKey(String userKey) {
         restTemplate.delete("http://localhost:8082/reservations/delete/" + userKey);
     }
 
+    public Visit getVisit(String userKey) {
+        return restTemplate.getForEntity("http://localhost:8082/reservations/details/" + userKey, Visit.class).getBody();
+    }
 }

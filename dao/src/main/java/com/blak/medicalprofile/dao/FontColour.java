@@ -16,9 +16,9 @@ public enum FontColour {
         return this.value;
     }
 
-    public static FontColour fromString(String StringOfFontColour) {
+    public static FontColour fromString(String stringOfFontColour) {
         for (FontColour fontColour : FontColour.values()) {
-            if (fontColour.getValue().equalsIgnoreCase(StringOfFontColour)) {
+            if (fontColour.getValue().equalsIgnoreCase(stringOfFontColour)) {
                 return fontColour;
             }
         }

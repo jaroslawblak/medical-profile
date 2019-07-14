@@ -15,6 +15,7 @@ public class Timetable {
     private Map<LocalDate, Set<Visit>> calendar = new TreeMap<>();
 
     public Timetable() {
+        //jackson requirements
     }
 
     public Map<LocalDate, Set<Visit>> getCalendar() {
@@ -37,7 +38,7 @@ public class Timetable {
         int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
         int daysInMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
 
-        System.out.println(new SimpleDateFormat("MMMM YYYY").format(calendar.getTime()));
+        System.out.println(new SimpleDateFormat("MMMM yyyy").format(calendar.getTime()));
         System.out.println(" S  M  T  W  T  F  S");
 
         StringBuilder initialSpace = new StringBuilder();

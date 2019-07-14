@@ -1,8 +1,19 @@
 package com.blak.medicalprofile.dao;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 import java.time.LocalDate;
 import java.util.Objects;
 
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = Patient.class, name = "patient"),
+        @JsonSubTypes.Type(value = Doctor.class, name = "doctor")
+})
 public abstract class User {
     private int id;
     private String firstName;
@@ -10,7 +21,6 @@ public abstract class User {
     private LocalDate birthday;
     private String pesel;
     private String userKey;
-
 
     public int getId() {
         return id;
